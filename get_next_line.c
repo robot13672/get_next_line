@@ -19,14 +19,14 @@ char	*ft_save(char *save)
 	int		j;
 
 	i = 0;
-	while (save[i] && save[i] != '\0')
+	while (save[i] && save[i] != '\n')
 		i++;
 	if (save[i] == '\0')
 	{
 		free(save);
 		return (NULL);
 	}
-	new_save = malloc(sizeof(char) * (ft_strlen(save) - i + 1));
+	new_save = malloc(sizeof(char) * (ft_strlen(save) - i));
 	if (!new_save)
 		return (NULL);
 	i++;
@@ -52,6 +52,7 @@ char	*get_line(char *save)
 		line = malloc(sizeof(char) * (i + 1));
 	if (!line)
 		return (NULL);
+	i = 0;
 	while (save[i] && save[i] != '\n')
 	{
 		line[i] = save[i];
@@ -109,11 +110,11 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int main()
-{
-	int	fd;
+// int main()
+// {
+// 	int	fd;
 
-	fd = open("../get_next_line.c", O_RDONLY);
-	char *str = get_next_line(fd);
-	printf("%s", str);
-}
+// 	fd = 0;
+// 	char *str = get_next_line(fd);
+// 	printf("%s", str);
+// }

@@ -17,16 +17,20 @@
 # endif
 
 # include <string.h>
-# include <unistd.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <sys/types.h>
-# include <sys/uio.h>
 # include <stdio.h>
 # include <fcntl.h>
 
+//get_next_line.c
 char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
+char	*read_line(int fd, char *save);
+char	*get_line(char *save);
+char	*ft_save(char *save);
+//get_next_line_utils.c
 size_t	ft_strlen(const char *s);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strchr(const char *s, int c);
 
 #endif
