@@ -12,29 +12,54 @@
 
 #include "get_next_line.h"
 
-char	*back_shift(char *save, size_t i)
+char	*ft_save(char *save)
 {
-	save += i;
-	save += 2;
-	return (save);
+	char	*new_save;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (save[i] && save[i] != '\0')
+		i++;
+	if (save[i] == '\0')
+	{
+		free(save);
+		return (NULL);
+	}
+	new_save = malloc(sizeof(char) * (ft_strlen(save) - i + 1));
+	if (!new_save)
+		return (NULL);
+	i++;
+	j = 0;
+	while (save[i])
+		new_save[j++] = save[i++];
+	new_save[j] = '\0';
+	free(save);
+	return (new_save);
 }
 
 char	*get_line(char *save)
 {
 	char	*line;
 	int		i;
-	int 	count;
 
-	count = 0;
 	i = 0;
-	while(save[count] && save[count] != '\n')
-		count++;
-	line = malloc(count + 1);
-	if(!line)
+	while (save[i] && save[i] != '\n')
+		i++;
+	if (save[i] == '\n')
+		line = malloc(sizeof(char) * (i + 2));
+	else
+		line = malloc(sizeof(char) * (i + 1));
+	if (!line)
 		return (NULL);
-	line[count] = 0;
-	while(i < count)
-		line[i++] = *(save++);
+	while (save[i] && save[i] != '\n')
+	{
+		line[i] = save[i];
+		i++;
+	}
+	if (save[i] == '\n')
+		line[i++] = '\n';
+	line[i] = '\0';
 	return (line);
 }
 
@@ -45,12 +70,12 @@ char	*read_line(int fd, char *save)
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
-		return(NULL);
+		return (NULL);
 	read_bytes = 1;
-	while(ft_strchr(save, '\n') && read_bytes != 0)
+	while (ft_strchr(save, '\n') && read_bytes != 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if(read_bytes == -1)
+		if (read_bytes == -1)
 		{
 			free(buffer);
 			return (NULL);
@@ -67,7 +92,8 @@ char	*get_next_line(int fd)
 	static char	*save;
 	char		*line;
 
-	if(fd < 0 || BUFFER_SIZE <= 0)
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (read(fd, 0, 0) < 0)
 	{
@@ -76,17 +102,18 @@ char	*get_next_line(int fd)
 		save = NULL;
 		return (NULL);
 	}
-	save = read_line(fd, save);
-	if(save)
-		line = get_line(save);
-	save = back_shift(save, ft_strlen(line));
+	if (!save)
+		return (NULL);
+	line = get_line(save);
+	save = ft_save(save);
 	return (line);
 }
 
 int main()
 {
-	int	fd = 0;
-	char *str = get_next_line(fd);
+	int	fd;
 
+	fd = open("../get_next_line.c", O_RDONLY);
+	char *str = get_next_line(fd);
 	printf("%s", str);
 }

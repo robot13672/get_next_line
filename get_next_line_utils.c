@@ -49,9 +49,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (dst);
 }
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlen(const char *s)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (s[i] != '\0')
