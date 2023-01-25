@@ -12,17 +12,22 @@
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(char *s, int c)
 {
-	while ((*s != '\0') && (*s != c))
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	if (c == '\0')
+		return ((char *)&s[ft_strlen(s)]);
+	while (s[i] != '\0')
 	{
-		s++;
+		if (s[i] == c)
+			return ((char *)&s[i]);
+		i++;
 	}
-	if (*s == c)
-	{
-		return ((char *)s);
-	}
-	return (NULL);
+	return (0);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
@@ -46,17 +51,31 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[i] != 0)
 		dst[j++] = s2[i++];
 	dst[j] = '\0';
-	free(s1);
-	free(s2);
 	return (dst);
 }
 
-size_t	ft_strlen(const char *s)
+char	*ft_strjoin_check(char *s1, char *s2)
 {
-	size_t	i;
+	char	*res;
+
+	if (!s1)
+		res = ft_strjoin("", s2);
+	else
+	{
+		res = ft_strjoin(s1, s2);
+		free(s1);
+	}
+	return (res);
+}
+
+size_t	ft_strlen(char *str)
+{
+	int	i;
 
 	i = 0;
-	while (s[i] != '\0')
+	if (!str)
+		return (0);
+	while (str[i])
 		i++;
 	return (i);
 }

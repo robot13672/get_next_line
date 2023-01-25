@@ -26,7 +26,7 @@ char	*ft_save(char *save)
 		free(save);
 		return (NULL);
 	}
-	new_save = malloc(sizeof(char) * (ft_strlen(save) - i));
+	new_save = (char *)malloc(sizeof(char) * (ft_strlen(save) - i));
 	if (!new_save)
 		return (NULL);
 	i++;
@@ -38,20 +38,20 @@ char	*ft_save(char *save)
 	return (new_save);
 }
 
-char	*get_line(char *save)
+char	*ft_get_line(char *save)
 {
 	char	*line;
 	int		i;
 
 	i = 0;
-	if (!save)
+	if (!save[i])
 		return (NULL);
 	while (save[i] && save[i] != '\n')
 		i++;
 	if (save[i] == '\n')
-		line = malloc(sizeof(char) * (i + 2));
+		line = (char *)malloc(sizeof(char) * (i + 2));
 	else
-		line = malloc(sizeof(char) * (i + 1));
+		line = (char *)malloc(sizeof(char) * (i + 1));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -84,7 +84,7 @@ char	*read_line(int fd, char *save)
 			return (NULL);
 		}
 		buffer[read_bytes] = '\0';
-		ft_strjoin(save, buffer);
+		save = ft_strjoin_check(save, buffer);
 	}
 	free(buffer);
 	return (save);
@@ -95,7 +95,6 @@ char	*get_next_line(int fd)
 	static char	*save;
 	char		*line;
 
-	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (read(fd, 0, 0) < 0)
@@ -105,18 +104,19 @@ char	*get_next_line(int fd)
 		save = NULL;
 		return (NULL);
 	}
+	save = read_line(fd, save);
 	if (!save)
 		return (NULL);
-	line = get_line(save);
+	line = ft_get_line(save);
 	save = ft_save(save);
-	return (line);
+	return (save);
 }
 
-// int main()
+// int main(void)
 // {
-// 	int	fd;
-
-// 	fd = 0;
+// 	int fd = open("test.txt", O_RDONLY);
+// 	printf("%d", fd);
 // 	char *str = get_next_line(fd);
 // 	printf("%s", str);
+// 	close(fd);
 // }
