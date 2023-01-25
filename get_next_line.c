@@ -44,6 +44,8 @@ char	*get_line(char *save)
 	int		i;
 
 	i = 0;
+	if (!save)
+		return (NULL);
 	while (save[i] && save[i] != '\n')
 		i++;
 	if (save[i] == '\n')
@@ -73,7 +75,7 @@ char	*read_line(int fd, char *save)
 	if (!buffer)
 		return (NULL);
 	read_bytes = 1;
-	while (ft_strchr(save, '\n') && read_bytes != 0)
+	while (!ft_strchr(save, '\n') && read_bytes != 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes == -1)
