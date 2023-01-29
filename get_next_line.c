@@ -109,14 +109,5 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = ft_get_line(save);
 	save = ft_save(save);
-	return (save);
+	return (line);
 }
-
-// int main(void)
-// {
-// 	int fd = open("test.txt", O_RDONLY);
-// 	printf("%d", fd);
-// 	char *str = get_next_line(fd);
-// 	printf("%s", str);
-// 	close(fd);
-// }
